@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  authentification:
+    container_name: authentification
+    restart: always
+    build:
+      context: ./authentification
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./authentification:/authentification
+      - /authentification/node_modules
+
+  command:
+    container_name: command
+    restart: always
+    build:
+      context: ./command
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./command:/command
+      - /command/node_modules
+    depends_on:
+      - authentification
+    
+    product:
+      container_name: product
+      restart: always
+      build:
+        context: ./product
+        dockerfile: Dockerfile
+      ports:
+        - "5000:5000"
+      volumes:
+        - ./product:/product
+        - /product/node_modules
+      depends_on:
+        - authentification
+
+    router:
+      container_name: router
+      restart: always
+      build:
+        context: ./router
+        dockerfile: Dockerfile
+      ports:
+        - "6000:6000"
+      volumes:
+        - ./router:/router
+        - /router/node_modules
