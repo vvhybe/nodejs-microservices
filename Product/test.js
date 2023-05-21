@@ -1,0 +1,1 @@
+console.log(process.env.MONGODB_DB_NAME)
